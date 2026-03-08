@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Uma surpresa pra você</title>
+
+<style>
+
+body{
+margin:0;
+font-family: Arial, sans-serif;
+background: linear-gradient(135deg,#ff9ecb,#ffd6e7);
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+text-align:center;
+overflow:hidden;
+}
+
+.screen{
+display:none;
+padding:25px;
+max-width:420px;
+}
+
+.active{
+display:block;
+}
+
+button{
+padding:12px 22px;
+border:none;
+border-radius:12px;
+background:#ff4da6;
+color:white;
+font-size:16px;
+cursor:pointer;
+margin-top:20px;
+}
+
+h1{
+color:#d63384;
+}
+
+#heart{
+font-size:50px;
+position:absolute;
+cursor:pointer;
+}
+
+#score{
+font-size:20px;
+margin-top:10px;
+}
+
+#petals{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+pointer-events:none;
+}
+
+.petal{
+position:absolute;
+font-size:20px;
+animation:fall linear infinite;
+}
+
+@keyframes fall{
+0%{transform:translateY(-10vh);}
+100%{transform:translateY(110vh);}
+}
+
+#messageText{
+font-size:18px;
+line-height:1.6;
+white-space:pre-line;
+}
+
+</style>
+</head>
+
+<body>
+
+<canvas id="petals"></canvas>
+
+<div id="start" class="screen active">
+<h1>Oi 😊</h1>
+<p>Preparei uma pequena surpresa para você.</p>
+<p>Mas antes… preciso da sua ajuda.</p>
+<button onclick="startGame()">Começar</button>
+</div>
+
+<div id="game" class="screen">
+<h1>Pegue os corações 💖</h1>
+<p>Toque em 8 corações para desbloquear sua mensagem.</p>
+<div id="score">0 / 8</div>
+<div id="heart">💖</div>
+</div>
+
+<div id="message" class="screen">
+<h1>Feliz Dia das Mulheres 🌷</h1>
+<div id="messageText"></div>
+</div>
+
+<script>
+
+let clicks=0
+let heart=document.getElementById("heart")
+
+function startGame(){
+document.getElementById("start").classList.remove("active")
+document.getElementById("game").classList.add("active")
+moveHeart()
+}
+
+function moveHeart(){
+let x=Math.random()*(window.innerWidth-60)
+let y=Math.random()*(window.innerHeight-60)
+
+heart.style.left=x+"px"
+heart.style.top=y+"px"
+}
+
+heart.onclick=function(){
+
+clicks++
+document.getElementById("score").innerText=clicks+" / 8"
+
+moveHeart()
+
+if(clicks>=8){
+document.getElementById("game").classList.remove("active")
+document.getElementById("message").classList.add("active")
+startTyping()
+startPetals()
+}
+
+}
+
+const text=`Hoje é um dia especial para lembrar o quanto você é uma pessoa incrível.
+
+Que nunca te falte força para correr atrás dos seus sonhos,
+leveza para aproveitar os momentos bons
+e muitos motivos para sorrir todos os dias.
+
+Obrigado pela sua amizade e por ser essa pessoa tão especial.
+Você merece muitas coisas boas na vida. ✨
+
+Com carinho,
+seu amigo Michel 💙`
+
+let i=0
+
+function startTyping(){
+let speed=40
+function type(){
+if(i<text.length){
+document.getElementById("messageText").innerHTML+=text.charAt(i)
+i++
+setTimeout(type,speed)
+}
+}
+type()
+}
+
+function startPetals(){
+
+for(let i=0;i<30;i++){
+
+let petal=document.createElement("div")
+petal.innerHTML="🌸"
+petal.className="petal"
+
+petal.style.left=Math.random()*100+"vw"
+petal.style.animationDuration=(Math.random()*5+5)+"s"
+
+document.body.appendChild(petal)
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
